@@ -534,11 +534,20 @@
 </footer>
 
 <script>
-  // Actualizar solo este número cuando revisen los registros reales — se aplica en toda la página.
-  const RIO_REGISTROS = 1;
+  // Número de respaldo, solo se usa si la función en vivo falla por algún motivo.
+  const RIO_REGISTROS_RESPALDO = 1;
   const RIO_META = 50;
-  document.querySelectorAll('.progress-count').forEach(el => el.textContent = RIO_REGISTROS);
-  document.querySelectorAll('.progress-fill').forEach(el => el.style.width = Math.min(100, (RIO_REGISTROS / RIO_META) * 100) + '%');
+
+  function pintarBarra(n) {
+    document.querySelectorAll('.progress-count').forEach(el => el.textContent = n);
+    document.querySelectorAll('.progress-fill').forEach(el => el.style.width = Math.min(100, (n / RIO_META) * 100) + '%');
+  }
+  pintarBarra(RIO_REGISTROS_RESPALDO);
+
+  fetch('/.netlify/functions/registros')
+    .then(r => r.json())
+    .then(data => { if (typeof data.count === 'number') pintarBarra(data.count); })
+    .catch(() => {});
 
   if (!sessionStorage.getItem('rioEntrySeen')) {
     document.getElementById('entryModal').classList.add('show');
