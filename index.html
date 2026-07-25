@@ -304,7 +304,7 @@
       <div class="progress-track"><div class="progress-fill" style="width: 0%;"></div></div>
     </div>
 
-    <form name="entrada" data-netlify="true" onsubmit="return submitToNetlify(event, 'entrada', () => document.getElementById('entryModal').classList.remove('show'));">
+    <form id="form-entrada" name="entrada" data-netlify="true">
       <input type="hidden" name="form-name" value="entrada" />
       <input type="email" name="correo" placeholder="Tu correo" required />
       <input type="text" name="instagram" placeholder="Tu @ de Instagram (opcional)" />
@@ -499,7 +499,7 @@
       <div class="progress-track"><div class="progress-fill" style="width: 0%;"></div></div>
     </div>
 
-    <form name="preventa" data-netlify="true" onsubmit="return submitToNetlify(event, 'preventa');">
+    <form id="form-preventa" name="preventa" data-netlify="true">
       <input type="hidden" name="form-name" value="preventa" />
       <input type="text" name="nombre" placeholder="Tu nombre" required />
       <input type="email" name="correo" placeholder="Tu correo" required />
@@ -517,7 +517,7 @@
       <h3>Promos y drops, antes que nadie.</h3>
       <p>Sin comprometerte a la preventa — solo avísanos dónde escribirte.</p>
     </div>
-    <form name="newsletter" data-netlify="true" onsubmit="return submitToNetlify(event, 'newsletter');">
+    <form id="form-newsletter" name="newsletter" data-netlify="true">
       <input type="hidden" name="form-name" value="newsletter" />
       <input type="email" name="correo" placeholder="Tu correo" required />
       <button type="submit">Suscribirme →</button>
@@ -546,9 +546,9 @@
   }
 
   // Envía el formulario a Netlify Forms (funciona solo una vez publicado en Netlify).
-  function submitToNetlify(e, formName, onSuccess) {
-    e.preventDefault();
-    const form = e.target;
+  // No se usan atributos onsubmit en el HTML a propósito: Netlify reescribe la etiqueta <form>
+  // cuando detecta data-netlify, y su forma de escapar comillas rompe los onsubmit inline.
+  function submitToNetlify(form, onSuccess) {
     const data = new URLSearchParams(new FormData(form)).toString();
     fetch('/', {
       method: 'POST',
@@ -559,8 +559,20 @@
       if (onSuccess) onSuccess();
       alert('Gracias — te avisamos pronto.');
     });
-    return false;
   }
+
+  document.getElementById('form-entrada').addEventListener('submit', function (e) {
+    e.preventDefault();
+    submitToNetlify(this, () => document.getElementById('entryModal').classList.remove('show'));
+  });
+  document.getElementById('form-preventa').addEventListener('submit', function (e) {
+    e.preventDefault();
+    submitToNetlify(this);
+  });
+  document.getElementById('form-newsletter').addEventListener('submit', function (e) {
+    e.preventDefault();
+    submitToNetlify(this);
+  });
 </script>
 
 </body>
