@@ -188,6 +188,32 @@
   }
   .rio-response.show { opacity: 1; }
 
+  /* MURO DE LA COMUNIDAD */
+  .muro-form { display: flex; gap: 10px; margin-top: 32px; max-width: 520px; flex-wrap: wrap; }
+  .muro-form input {
+    flex: 1; min-width: 220px; background: var(--bg-soft); border: 1px solid var(--border); color: var(--text);
+    padding: 14px 16px; border-radius: 10px; font-size: 15px; font-family: inherit;
+  }
+  .muro-form button {
+    background: var(--accent); color: #fff; font-weight: 700; border: none;
+    padding: 14px 22px; border-radius: 10px; cursor: pointer; font-family: -apple-system, sans-serif;
+  }
+  .muro-form button:hover { background: var(--accent-deep); }
+  .muro-cloud {
+    margin-top: 40px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+    min-height: 60px;
+  }
+  .muro-loading { color: var(--text-dim); font-size: 14px; }
+  .muro-word {
+    background: var(--bg-soft); border: 1px solid var(--border); border-radius: 999px;
+    padding: 10px 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+    font-family: Georgia, serif; font-style: italic; color: var(--text);
+    transition: border-color 0.2s ease, transform 0.15s ease;
+  }
+  .muro-word:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .muro-word .votos { color: var(--accent); font-family: -apple-system, sans-serif; font-style: normal; font-size: 12px; font-weight: 700; }
+  .muro-word.voted { opacity: 0.6; cursor: default; }
+
   /* FAQ */
   .faq-list { margin-top: 40px; max-width: 720px; }
   .faq-item { border-bottom: 1px solid var(--border); }
@@ -360,6 +386,7 @@
     <div class="navlinks">
       <a href="#manifiesto">Manifiesto</a>
       <a href="#producto">Drops</a>
+      <a href="#muro">Comunidad</a>
       <a href="#filtro">Para quién</a>
       <a href="#waitlist">Preventa</a>
       <a href="#faq">FAQ</a>
@@ -377,6 +404,7 @@
   </div>
   <a href="#manifiesto" onclick="document.getElementById('mpanel').classList.remove('open')">Manifiesto</a>
   <a href="#producto" onclick="document.getElementById('mpanel').classList.remove('open')">Drops</a>
+  <a href="#muro" onclick="document.getElementById('mpanel').classList.remove('open')">Comunidad</a>
   <a href="#filtro" onclick="document.getElementById('mpanel').classList.remove('open')">Para quién</a>
   <a href="#waitlist" onclick="document.getElementById('mpanel').classList.remove('open')">Preventa</a>
   <a href="#faq" onclick="document.getElementById('mpanel').classList.remove('open')">FAQ</a>
@@ -438,6 +466,21 @@
     <button class="rio-stage" data-msg="Bienvenido del otro lado. Ahora tú eres el río para alguien más.">Del otro lado</button>
   </div>
   <div class="rio-response" id="rioResponse"></div>
+</section>
+
+<section class="wrap" id="muro">
+  <div class="section-label reveal">Comunidad</div>
+  <h2 class="reveal" style="font-size: clamp(26px, 4vw, 38px);">Tu palabra para el próximo drop.</h2>
+  <p class="lead reveal">Escribe una palabra o frase corta que te gustaría ver en una playera. Las que más votos junten inspiran el siguiente diseño real.</p>
+
+  <form id="form-palabra" class="muro-form reveal">
+    <input type="text" id="palabraInput" placeholder="Ej. Coherencia, Río interior, Despierta..." maxlength="60" required />
+    <button type="submit">Agregar →</button>
+  </form>
+
+  <div class="muro-cloud" id="muroCloud">
+    <p class="muro-loading">Cargando palabras de la comunidad...</p>
+  </div>
 </section>
 
 <section class="wrap" id="proceso">
@@ -650,6 +693,75 @@
       resp.classList.add('show');
     });
   });
+
+  // Muro de la comunidad — palabras y votos reales guardados en Netlify Blobs.
+  const MURO_URL = '/.netlify/functions/palabras';
+  const votadas = JSON.parse(localStorage.getItem('rioVotadas') || '[]');
+
+  function renderMuro(palabras) {
+    const cloud = document.getElementById('muroCloud');
+    if (!palabras || palabras.length === 0) {
+      cloud.innerHTML = '<p class="muro-loading">Sé el primero en agregar una palabra.</p>';
+      return;
+    }
+    const ordenadas = [...palabras].sort((a, b) => (b.votos || 0) - (a.votos || 0));
+    cloud.innerHTML = '';
+    ordenadas.forEach((p) => {
+      const yaVotada = votadas.includes(p.id);
+      const el = document.createElement('button');
+      el.className = 'muro-word' + (yaVotada ? ' voted' : '');
+      el.innerHTML = p.texto.replace(/</g, '&lt;') + ' <span class="votos">♥ ' + (p.votos || 0) + '</span>';
+      if (!yaVotada) {
+        el.addEventListener('click', () => votarPalabra(p.id));
+      }
+      cloud.appendChild(el);
+    });
+  }
+
+  async function cargarMuro() {
+    try {
+      const res = await fetch(MURO_URL);
+      const data = await res.json();
+      renderMuro(data.palabras);
+    } catch (e) {
+      document.getElementById('muroCloud').innerHTML = '<p class="muro-loading">No se pudo cargar el muro ahorita — intenta más tarde.</p>';
+    }
+  }
+
+  async function votarPalabra(id) {
+    votadas.push(id);
+    localStorage.setItem('rioVotadas', JSON.stringify(votadas));
+    try {
+      const res = await fetch(MURO_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'votar', id }),
+      });
+      const data = await res.json();
+      renderMuro(data.palabras);
+    } catch (e) {}
+  }
+
+  document.getElementById('form-palabra').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const input = document.getElementById('palabraInput');
+    const texto = input.value.trim();
+    if (!texto) return;
+    try {
+      const res = await fetch(MURO_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texto }),
+      });
+      const data = await res.json();
+      input.value = '';
+      renderMuro(data.palabras);
+    } catch (e) {
+      alert('No se pudo agregar tu palabra — intenta de nuevo en un momento.');
+    }
+  });
+
+  cargarMuro();
 
   // Envía el formulario a Netlify Forms (funciona solo una vez publicado en Netlify).
   // No se usan atributos onsubmit en el HTML a propósito: Netlify reescribe la etiqueta <form>
