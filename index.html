@@ -140,6 +140,10 @@
     border-radius: 4px 24px 4px 24px; padding: 32px 26px;
   }
   .card .num { color: var(--accent); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-bottom: 14px; font-family: -apple-system, sans-serif; }
+  .coming-soon {
+    background: var(--border); color: var(--text-dim); font-size: 10px; letter-spacing: 1px;
+    padding: 3px 9px; border-radius: 999px; margin-left: 8px; text-transform: uppercase;
+  }
   .card h3 { font-size: 26px; margin-bottom: 10px; }
   .card p { color: var(--text-dim); font-size: 14px; }
 
@@ -444,12 +448,12 @@
       <p>Validamos el mensaje y el diseño junto a la comunidad que estamos construyendo.</p>
     </div>
     <div class="card reveal">
-      <div class="num">Drop 02 · Invierno</div>
+      <div class="num">Drop 02 · Invierno <span class="coming-soon">Próximamente</span></div>
       <h3>Hoodies</h3>
       <p>Mismo público, mismo propósito — una prenda para acompañar los días más fríos.</p>
     </div>
     <div class="card reveal">
-      <div class="num">Drop 03</div>
+      <div class="num">Drop 03 <span class="coming-soon">Próximamente</span></div>
       <h3>Gorras y pines</h3>
       <p>Merch de comunidad, para quienes ya son parte de esto desde el día uno.</p>
     </div>
@@ -601,8 +605,10 @@
     .catch(() => {});
 
   if (!sessionStorage.getItem('rioEntrySeen')) {
-    document.getElementById('entryModal').classList.add('show');
-    sessionStorage.setItem('rioEntrySeen', '1');
+    setTimeout(() => {
+      document.getElementById('entryModal').classList.add('show');
+      sessionStorage.setItem('rioEntrySeen', '1');
+    }, 15000);
   }
 
   // Envía el formulario a Netlify Forms (funciona solo una vez publicado en Netlify).
