@@ -172,6 +172,24 @@
   }
   .autosugestion p:nth-child(1) { color: var(--accent); }
 
+  /* CINEMA — video horizontal de río */
+  .rio-cinema { position: relative; width: 100%; height: 60vh; min-height: 320px; overflow: hidden; }
+  .rio-cinema video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .rio-cinema-overlay {
+    position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14,13,11,0.3), rgba(14,13,11,0.75));
+    display: flex; align-items: flex-end; padding: 40px;
+  }
+  .rio-cinema-overlay p {
+    font-family: Georgia, serif; font-style: italic; color: var(--text);
+    font-size: clamp(22px, 4vw, 40px);
+  }
+
+  /* TU RÍO — con video de fondo */
+  .rio-section-video { position: relative; overflow: hidden; padding-top: 70px; padding-bottom: 70px; }
+  .rio-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .rio-bg-overlay { position: absolute; inset: 0; background: rgba(14,13,11,0.82); z-index: 1; }
+  .rio-content { position: relative; z-index: 2; }
+
   /* TU RÍO — interactivo */
   .rio-stages { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
   .rio-stage {
@@ -456,25 +474,40 @@
   <p class="lead reveal">Esto no es solo ropa. Es un recordatorio que traes puesto — capa por capa — para las personas que están en un camino de introspección y de despertar en consciencia.</p>
 </section>
 
-<section class="wrap" id="tu-rio">
-  <div class="section-label reveal">Un momento para ti</div>
-  <h2 class="reveal" style="font-size: clamp(26px, 4vw, 38px);">¿En qué punto de tu río estás hoy?</h2>
-  <div class="rio-stages reveal">
-    <button class="rio-stage" data-msg="Está bien no saber todavía — el río también empieza como un hilo de agua.">Empezando a despertar</button>
-    <button class="rio-stage" data-msg="Aquí es donde más se siente el movimiento. Sigue — no te detengas justo ahora.">En medio del cambio</button>
-    <button class="rio-stage" data-msg="Ya casi. La corriente ya te está llevando sola.">Ya cruzando</button>
-    <button class="rio-stage" data-msg="Bienvenido del otro lado. Ahora tú eres el río para alguien más.">Del otro lado</button>
+<section class="rio-cinema">
+  <video autoplay muted loop playsinline>
+    <source src="assets/rio-horizontal.mp4" type="video/mp4" />
+  </video>
+  <div class="rio-cinema-overlay">
+    <p>El río sigue corriendo.</p>
   </div>
-  <div class="rio-response" id="rioResponse"></div>
+</section>
+
+<section class="wrap rio-section-video" id="tu-rio">
+  <video class="rio-bg-video" autoplay muted loop playsinline>
+    <source src="assets/rio-vertical.mp4" type="video/mp4" />
+  </video>
+  <div class="rio-bg-overlay"></div>
+  <div class="rio-content">
+    <div class="section-label reveal">Un momento para ti</div>
+    <h2 class="reveal" style="font-size: clamp(26px, 4vw, 38px);">¿En qué punto de tu río estás hoy?</h2>
+    <div class="rio-stages reveal">
+      <button class="rio-stage" data-msg="Está bien no saber todavía — el río también empieza como un hilo de agua.">Empezando a despertar</button>
+      <button class="rio-stage" data-msg="Aquí es donde más se siente el movimiento. Sigue — no te detengas justo ahora.">En medio del cambio</button>
+      <button class="rio-stage" data-msg="Ya casi. La corriente ya te está llevando sola.">Ya cruzando</button>
+      <button class="rio-stage" data-msg="Bienvenido del otro lado. Ahora tú eres el río para alguien más.">Del otro lado</button>
+    </div>
+    <div class="rio-response" id="rioResponse"></div>
+  </div>
 </section>
 
 <section class="wrap" id="muro">
   <div class="section-label reveal">Comunidad</div>
-  <h2 class="reveal" style="font-size: clamp(26px, 4vw, 38px);">Tu palabra para el próximo drop.</h2>
-  <p class="lead reveal">Escribe una palabra o frase corta que te gustaría ver en una playera. Las que más votos junten inspiran el siguiente diseño real.</p>
+  <h2 class="reveal" style="font-size: clamp(26px, 4vw, 38px);">¿Qué te gustaría escuchar hoy?</h2>
+  <p class="lead reveal">Escríbelo aquí. La comunidad completa te lo está diciendo — y las frases que más resuenen inspiran el siguiente diseño real.</p>
 
   <form id="form-palabra" class="muro-form reveal">
-    <input type="text" id="palabraInput" placeholder="Ej. Coherencia, Río interior, Despierta..." maxlength="60" required />
+    <input type="text" id="palabraInput" placeholder="Ej. Que soy suficiente, Que voy bien, Fuerza..." maxlength="60" required />
     <button type="submit">Agregar →</button>
   </form>
 
