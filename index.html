@@ -11,6 +11,9 @@
 <meta property="og:image" content="https://rio-preventa.netlify.app/assets/og-image.png" />
 <!-- Reemplazar por una foto real del producto cuando tengan el diseño final -->
 <meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400;1,500&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0E0D0B;
@@ -20,17 +23,20 @@
     --accent: #4E8CA3;
     --accent-deep: #2C5866;
     --border: #2E2B24;
+    --font-serif: "Fraunces", Georgia, serif;
+    --font-mono: "Space Mono", "SF Mono", monospace;
+    --font-sans: "Inter", -apple-system, "Helvetica Neue", Arial, sans-serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-sans);
     line-height: 1.55;
     overflow-x: hidden;
   }
   .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
-  serif, .serif { font-family: Georgia, "Iowan Old Style", "Times New Roman", serif; }
+  serif, .serif { font-family: var(--font-serif); }
 
   /* NAV */
   header {
@@ -43,7 +49,7 @@
     height: 68px;
   }
   .logo-block { line-height: 1.1; }
-  .logo { font-family: Georgia, serif; font-weight: 700; font-style: italic; font-size: 22px; }
+  .logo { font-family: var(--font-serif); font-weight: 700; font-style: italic; font-size: 22px; }
   .logo span { color: var(--accent); }
   .tagline { font-size: 11px; color: var(--text-dim); letter-spacing: 0.3px; }
   @media (max-width: 760px) { .tagline { display: none; } }
@@ -68,7 +74,7 @@
   .mobile-panel .close-row { display: flex; justify-content: flex-end; }
   .mobile-panel .close-row button { background: none; border: none; font-size: 28px; color: var(--text); cursor: pointer; }
   .mobile-panel a {
-    color: var(--text); text-decoration: none; font-family: Georgia, serif; font-style: italic;
+    color: var(--text); text-decoration: none; font-family: var(--font-serif); font-style: italic;
     font-size: 30px; padding: 18px 0; border-bottom: 1px solid var(--border);
   }
 
@@ -92,20 +98,20 @@
   }
   .eyebrow .dot { color: var(--accent); }
   .eyebrow strong { color: var(--text); }
-  h1, h2, h3 { font-family: Georgia, "Iowan Old Style", "Times New Roman", serif; font-weight: 400; line-height: 1.08; }
+  h1, h2, h3 { font-family: var(--font-serif); font-weight: 400; line-height: 1.08; }
   .accent-word { color: var(--accent); font-style: italic; }
   section { padding: 90px 0; }
   .section-label {
     font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
     color: var(--accent); margin-bottom: 16px; font-weight: 700;
-    font-family: -apple-system, sans-serif;
+    font-family: var(--font-mono);
   }
   p.lead { font-size: 19px; color: var(--text-dim); max-width: 640px; }
   .btn {
     display: inline-block; background: var(--accent); color: #fff;
     font-weight: 700; padding: 16px 32px; border-radius: 999px;
     text-decoration: none; font-size: 15px; margin-top: 28px;
-    font-family: -apple-system, sans-serif;
+    font-family: var(--font-sans);
   }
   .btn:hover { background: var(--accent-deep); }
   .btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--text); }
@@ -127,7 +133,7 @@
   .discount-badge {
     display: inline-flex; align-items: center; gap: 8px; background: var(--accent);
     color: #fff; padding: 8px 18px; border-radius: 999px; font-size: 13px;
-    font-weight: 700; margin-bottom: 20px; font-family: -apple-system, sans-serif;
+    font-weight: 700; margin-bottom: 20px; font-family: var(--font-mono);
   }
 
   /* MANIFIESTO */
@@ -140,7 +146,7 @@
     background: var(--bg-soft); border: 1px solid var(--border);
     border-radius: 4px 24px 4px 24px; padding: 32px 26px;
   }
-  .card .num { color: var(--accent); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-bottom: 14px; font-family: -apple-system, sans-serif; }
+  .card .num { color: var(--accent); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-bottom: 14px; font-family: var(--font-mono); }
   .coming-soon {
     background: var(--border); color: var(--text-dim); font-size: 10px; letter-spacing: 1px;
     padding: 3px 9px; border-radius: 999px; margin-left: 8px; text-transform: uppercase;
@@ -153,14 +159,14 @@
   .valor-chip {
     background: var(--accent-deep); border: 1px solid var(--accent); color: var(--text);
     padding: 11px 22px; border-radius: 999px; font-size: 14px; font-style: italic;
-    font-family: Georgia, serif; font-weight: 600;
+    font-family: var(--font-serif); font-weight: 600;
   }
 
   /* FILTRO */
   .filtro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 48px; }
-  .filtro-col h4 { font-size: 15px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px; color: var(--text-dim); font-family: -apple-system, sans-serif; }
+  .filtro-col h4 { font-size: 15px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px; color: var(--text-dim); font-family: var(--font-mono); }
   .filtro-item { margin-bottom: 22px; }
-  .filtro-item .t { font-weight: 700; font-size: 17px; margin-bottom: 4px; font-family: -apple-system, sans-serif; }
+  .filtro-item .t { font-weight: 700; font-size: 17px; margin-bottom: 4px; font-family: var(--font-sans); }
   .filtro-item .d { color: var(--text-dim); font-size: 14px; }
   .filtro-col.si .filtro-item .t::before { content: "— "; color: var(--accent); }
   .filtro-col.no .filtro-item .t::before { content: "— "; color: #9c6b52; }
@@ -168,7 +174,7 @@
   /* AUTOSUGESTION */
   .autosugestion-wrap { padding: 40px 24px 20px; text-align: center; }
   .autosugestion p {
-    font-family: Georgia, serif; font-style: italic; color: var(--text);
+    font-family: var(--font-serif); font-style: italic; color: var(--text);
     font-size: clamp(20px, 3.4vw, 32px); line-height: 1.5;
   }
   .autosugestion p:nth-child(1) { color: var(--accent); }
@@ -206,14 +212,14 @@
   /* FALTAN LUGARES — momento grande */
   .lugares-block { text-align: center; padding: 70px 24px; background: var(--bg-soft); }
   .lugares-block .num-grande {
-    font-family: Georgia, serif; font-style: italic; color: var(--accent);
+    font-family: var(--font-serif); font-style: italic; color: var(--accent);
     font-size: clamp(50px, 10vw, 100px); line-height: 1;
   }
   .lugares-block p { color: var(--text-dim); margin-top: 10px; font-size: 15px; }
 
   /* CARTA DE CIERRE */
   .carta { max-width: 620px; margin: 0 auto; padding: 80px 24px; text-align: left; }
-  .carta p { font-family: Georgia, serif; font-size: 17px; line-height: 1.8; color: var(--text-dim); margin-bottom: 16px; }
+  .carta p { font-family: var(--font-serif); font-size: 17px; line-height: 1.8; color: var(--text-dim); margin-bottom: 16px; }
   .carta .firma { color: var(--text); font-style: italic; margin-top: 24px; }
 
   /* CINEMA — video horizontal de río */
@@ -224,7 +230,7 @@
     display: flex; align-items: flex-end; padding: 40px;
   }
   .rio-cinema-overlay p {
-    font-family: Georgia, serif; font-style: italic; color: var(--text);
+    font-family: var(--font-serif); font-style: italic; color: var(--text);
     font-size: clamp(22px, 4vw, 40px);
   }
 
@@ -239,12 +245,12 @@
   .rio-stage {
     background: var(--bg-soft); border: 1px solid var(--border); color: var(--text);
     padding: 14px 22px; border-radius: 999px; font-size: 14px; cursor: pointer;
-    font-family: -apple-system, sans-serif; transition: border-color 0.2s ease, transform 0.2s ease;
+    font-family: var(--font-sans); transition: border-color 0.2s ease, transform 0.2s ease;
   }
   .rio-stage:hover { border-color: var(--accent); transform: translateY(-2px); }
   .rio-stage.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
   .rio-response {
-    margin-top: 28px; min-height: 32px; font-family: Georgia, serif; font-style: italic;
+    margin-top: 28px; min-height: 32px; font-family: var(--font-serif); font-style: italic;
     font-size: clamp(18px, 2.6vw, 24px); color: var(--accent); max-width: 640px;
     opacity: 0; transition: opacity 0.4s ease;
   }
@@ -258,7 +264,7 @@
   }
   .muro-form button {
     background: var(--accent); color: #fff; font-weight: 700; border: none;
-    padding: 14px 22px; border-radius: 10px; cursor: pointer; font-family: -apple-system, sans-serif;
+    padding: 14px 22px; border-radius: 10px; cursor: pointer; font-family: var(--font-sans);
   }
   .muro-form button:hover { background: var(--accent-deep); }
   .muro-cloud {
@@ -269,15 +275,15 @@
   .muro-word {
     background: var(--bg-soft); border: 1px solid var(--border); border-radius: 999px;
     padding: 10px 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
-    font-family: Georgia, serif; font-style: italic; color: var(--text);
+    font-family: var(--font-serif); font-style: italic; color: var(--text);
     transition: border-color 0.2s ease, transform 0.15s ease;
   }
   .muro-word:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .muro-word .votos { color: var(--accent); font-family: -apple-system, sans-serif; font-style: normal; font-size: 12px; font-weight: 700; }
+  .muro-word .votos { color: var(--accent); font-family: var(--font-mono); font-style: normal; font-size: 12px; font-weight: 700; }
   .muro-word.voted { opacity: 0.6; cursor: default; }
   .patrones-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
   .patron-chip {
-    font-family: -apple-system, sans-serif; color: var(--text); background: var(--bg-soft);
+    font-family: var(--font-mono); color: var(--text); background: var(--bg-soft);
     border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px;
   }
   .patron-chip b { color: var(--accent); }
@@ -288,7 +294,7 @@
   .faq-q {
     width: 100%; display: flex; justify-content: space-between; align-items: center;
     background: none; border: none; cursor: pointer; padding: 20px 0;
-    font-family: -apple-system, sans-serif; font-size: 16px; font-weight: 600; color: var(--text);
+    font-family: var(--font-sans); font-size: 16px; font-weight: 600; color: var(--text);
     text-align: left;
   }
   .faq-icon { color: var(--accent); font-size: 20px; transition: transform 0.3s ease; }
@@ -305,7 +311,7 @@
   .waitlist-box h2 { font-size: clamp(26px, 3.6vw, 38px); margin-bottom: 12px; }
   .progress-block { margin-top: 32px; max-width: 480px; }
   .progress-label { font-size: 14px; color: var(--text-dim); margin-bottom: 10px; }
-  .progress-label .progress-count { font-family: Georgia, serif; font-style: italic; color: var(--text); font-size: 17px; }
+  .progress-label .progress-count { font-family: var(--font-mono); font-style: italic; color: var(--text); font-size: 17px; }
   .progress-track { height: 6px; border-radius: 999px; background: var(--border); overflow: hidden; }
   .progress-fill { height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.6s ease; }
 
@@ -318,7 +324,7 @@
   button[type="submit"] {
     background: var(--accent); color: #fff; font-weight: 700;
     border: none; padding: 16px; border-radius: 10px; font-size: 15px;
-    cursor: pointer; margin-top: 6px; font-family: -apple-system, sans-serif;
+    cursor: pointer; margin-top: 6px; font-family: var(--font-sans);
   }
   button[type="submit"]:hover { background: var(--accent-deep); }
   .small-note { font-size: 12px; color: var(--text-dim); margin-top: 14px; }
@@ -338,7 +344,7 @@
   .newsletter input::placeholder { color: rgba(255,255,255,0.6); }
   .newsletter button {
     background: #fff; color: var(--accent-deep); white-space: nowrap;
-    font-family: -apple-system, sans-serif; font-weight: 700; border: none;
+    font-family: var(--font-sans); font-weight: 700; border: none;
     padding: 14px 22px; border-radius: 10px; cursor: pointer;
   }
 
@@ -357,7 +363,7 @@
   }
   .marquee-track { display: inline-flex; animation: marquee-scroll 22s linear infinite; }
   .marquee-track span {
-    font-family: Georgia, serif; font-style: italic; font-size: 18px;
+    font-family: var(--font-serif); font-style: italic; font-size: 18px;
     color: #05141a; padding-right: 4px;
   }
   @keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -376,7 +382,7 @@
     background-size: 220% 220%; animation: shimmer 6s ease infinite;
   }
   .proceso-placeholder span {
-    font-family: Georgia, serif; font-style: italic; font-size: 17px; color: var(--text);
+    font-family: var(--font-serif); font-style: italic; font-size: 17px; color: var(--text);
     background: rgba(14,13,11,0.55); padding: 8px 18px; border-radius: 999px;
   }
   @keyframes shimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -440,7 +446,7 @@
     <p class="lead">Sé de los primeros en enterarte cuando abramos la preventa — 20% solo para los primeros 50 registros.</p>
 
     <div class="progress-block">
-      <div class="progress-label"><span class="progress-count">0</span> de 50 lugares con 20% ya tomados</div>
+      <div class="progress-label">Quedan <span class="progress-count">0</span> de 50 lugares con 20%</div>
       <div class="progress-track"><div class="progress-fill" style="width: 0%;"></div></div>
     </div>
 
@@ -693,7 +699,7 @@
 
     <!-- Actualizar manualmente cuando tengan el número real de registros (revisar en Netlify Forms) -->
     <div class="progress-block">
-      <div class="progress-label"><span class="progress-count">0</span> de 50 lugares con 20% ya tomados</div>
+      <div class="progress-label">Quedan <span class="progress-count">0</span> de 50 lugares con 20%</div>
       <div class="progress-track"><div class="progress-fill" style="width: 0%;"></div></div>
     </div>
 
@@ -717,7 +723,7 @@
       <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
         <span>¿Qué tallas manejan?</span><span class="faq-icon">+</span>
       </button>
-      <div class="faq-a"><p>Unisex, corte regular. Guía de referencia (pecho / largo): S — 96cm / 68cm · M — 102cm / 70cm · L — 108cm / 72cm · XL — 114cm / 74cm. <em>(Nota: confirmar estas medidas con la tela y patrón real una vez elegido el proveedor.)</em></p></div>
+      <div class="faq-a"><p>Unisex, corte regular. Guía de referencia (pecho / largo): S — 96cm / 68cm · M — 102cm / 70cm · L — 108cm / 72cm · XL — 114cm / 74cm.</p></div>
     </div>
     <div class="faq-item reveal">
       <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
@@ -735,7 +741,7 @@
       <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
         <span>¿De qué material son?</span><span class="faq-icon">+</span>
       </button>
-      <div class="faq-a"><p>Algodón de peso considerable, pensado para durar — no es la playera delgada básica. Detalles finales del material se confirman con el Drop 01.</p></div>
+      <div class="faq-a"><p>Algodón de peso considerable, pensado para durar — no es la playera delgada básica.</p></div>
     </div>
   </div>
 </section>
@@ -775,9 +781,9 @@
   const RIO_META = 50;
 
   function pintarBarra(n) {
-    document.querySelectorAll('.progress-count').forEach(el => el.textContent = n);
-    document.querySelectorAll('.progress-fill').forEach(el => el.style.width = Math.min(100, (n / RIO_META) * 100) + '%');
     const restantes = Math.max(0, RIO_META - n);
+    document.querySelectorAll('.progress-count').forEach(el => el.textContent = restantes);
+    document.querySelectorAll('.progress-fill').forEach(el => el.style.width = Math.min(100, (n / RIO_META) * 100) + '%');
     const lg = document.getElementById('lugaresGrande');
     if (lg) lg.textContent = restantes;
   }
