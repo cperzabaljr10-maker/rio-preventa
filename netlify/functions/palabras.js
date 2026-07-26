@@ -2,6 +2,19 @@
 // con conteo de votos. Usa Netlify Blobs (incluido gratis, sin base de datos externa).
 const { getStore } = require('@netlify/blobs');
 
+// Filtro básico de moderación — no es perfecto, pero bloquea lo más obvio automáticamente.
+// Cualquier cosa que se cuele se puede borrar manualmente (pedir ayuda para eso cuando haga falta).
+const PALABRAS_BLOQUEADAS = [
+  'puta', 'puto', 'pendejo', 'pendeja', 'verga', 'chinga', 'mierda', 'cabron', 'cabrón',
+  'idiota', 'estupido', 'estúpido', 'imbecil', 'imbécil', 'maldito', 'maldita',
+  'perra', 'zorra', 'culero', 'culera', 'nazi', 'matar', 'suicid', 'violar',
+];
+
+function contieneTextoBloqueado(texto) {
+  const limpio = texto.toLowerCase();
+  return PALABRAS_BLOQUEADAS.some((mala) => limpio.includes(mala));
+}
+
 function store() {
   return getStore({
     name: 'palabras',
@@ -37,6 +50,9 @@ exports.handler = async function (event) {
       const texto = (body.texto || '').trim().slice(0, 60);
       if (!texto) {
         return { statusCode: 400, headers, body: JSON.stringify({ error: 'texto vacío' }) };
+      }
+      if (contieneTextoBloqueado(texto)) {
+        return { statusCode: 200, headers, body: JSON.stringify({ error: 'Ese texto no se puede publicar — intenta con otra frase.', bloqueado: true }) };
       }
       const nueva = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), texto, votos: 0 };
       data.push(nueva);

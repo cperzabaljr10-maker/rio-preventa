@@ -274,6 +274,12 @@
   .muro-word:hover { border-color: var(--accent); transform: translateY(-2px); }
   .muro-word .votos { color: var(--accent); font-family: -apple-system, sans-serif; font-style: normal; font-size: 12px; font-weight: 700; }
   .muro-word.voted { opacity: 0.6; cursor: default; }
+  .patrones-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .patron-chip {
+    font-family: -apple-system, sans-serif; color: var(--text); background: var(--bg-soft);
+    border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px;
+  }
+  .patron-chip b { color: var(--accent); }
 
   /* FAQ */
   .faq-list { margin-top: 40px; max-width: 720px; }
@@ -440,7 +446,7 @@
     <form id="form-entrada" name="entrada" data-netlify="true">
       <input type="hidden" name="form-name" value="entrada" />
       <input type="email" name="correo" placeholder="Tu correo" required />
-      <input type="text" name="instagram" placeholder="Tu @ de Instagram (opcional)" />
+      <input type="tel" name="whatsapp" placeholder="Tu WhatsApp (opcional)" />
       <button type="submit">Entrar →</button>
     </form>
     <p class="small-note">No compartimos tu información con nadie. Solo la usamos para avisarte del lanzamiento.</p>
@@ -555,9 +561,9 @@
 </section>
 
 <section class="wrap" id="muro">
-  <div class="section-label reveal">Comunidad</div>
+  <div class="section-label reveal">Comunidad · escribe y vota</div>
   <h2 class="reveal" style="font-size: clamp(26px, 4vw, 38px);">¿Qué te gustaría escuchar hoy?</h2>
-  <p class="lead reveal">Escríbelo aquí. La comunidad completa te lo está diciendo — y las frases que más resuenen inspiran el siguiente diseño real.</p>
+  <p class="lead reveal">Escribe abajo la frase que necesitas escuchar hoy. Dale ♥ a las que ya están si te identificas con ellas. Las que más se repiten se convierten en el diseño real del siguiente drop.</p>
 
   <form id="form-palabra" class="muro-form reveal">
     <input type="text" id="palabraInput" placeholder="Ej. Que soy suficiente, Que voy bien, Fuerza..." maxlength="60" required />
@@ -566,6 +572,12 @@
 
   <div class="muro-cloud" id="muroCloud">
     <p class="muro-loading">Cargando palabras de la comunidad...</p>
+  </div>
+
+  <div class="muro-patrones" id="muroPatrones" style="display:none;">
+    <div class="section-label" style="margin-top:48px;">Lo que más se repite</div>
+    <p class="lead" style="font-size:14px;margin-top:6px;">Análisis real de las frases que ya escribió la comunidad — no inventado. Conforme haya más, aquí va a poder verse el mapa completo de patrones.</p>
+    <div class="patrones-list" id="patronesList"></div>
   </div>
 </section>
 
@@ -822,7 +834,7 @@
     setTimeout(() => {
       document.getElementById('entryModal').classList.add('show');
       sessionStorage.setItem('rioEntrySeen', '1');
-    }, 15000);
+    }, 8000);
   }
 
   document.querySelectorAll('.rio-stage').forEach(btn => {
@@ -859,6 +871,38 @@
       }
       cloud.appendChild(el);
     });
+    analizarPatrones(palabras);
+  }
+
+  const STOPWORDS = ['que', 'de', 'la', 'el', 'en', 'y', 'a', 'mi', 'me', 'un', 'una', 'lo', 'las', 'los', 'con', 'es', 'muy', 'para', 'tu', 'se', 'soy', 'voy'];
+
+  function analizarPatrones(palabras) {
+    const panel = document.getElementById('muroPatrones');
+    const lista = document.getElementById('patronesList');
+    if (!palabras || palabras.length < 5) {
+      panel.style.display = 'none';
+      return;
+    }
+    const conteo = {};
+    palabras.forEach((p) => {
+      p.texto.toLowerCase().replace(/[^a-záéíóúñ\s]/g, '').split(/\s+/).forEach((palabra) => {
+        if (palabra.length < 4 || STOPWORDS.includes(palabra)) return;
+        conteo[palabra] = (conteo[palabra] || 0) + 1;
+      });
+    });
+    const top = Object.entries(conteo).filter(([, n]) => n > 1).sort((a, b) => b[1] - a[1]).slice(0, 8);
+    if (top.length === 0) {
+      panel.style.display = 'none';
+      return;
+    }
+    lista.innerHTML = '';
+    top.forEach(([palabra, n]) => {
+      const chip = document.createElement('div');
+      chip.className = 'patron-chip';
+      chip.innerHTML = palabra + ' <b>×' + n + '</b>';
+      lista.appendChild(chip);
+    });
+    panel.style.display = 'block';
   }
 
   async function cargarMuro() {
@@ -897,6 +941,10 @@
         body: JSON.stringify({ texto }),
       });
       const data = await res.json();
+      if (data.bloqueado) {
+        alert(data.error);
+        return;
+      }
       input.value = '';
       renderMuro(data.palabras);
     } catch (e) {
