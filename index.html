@@ -8,7 +8,8 @@
 <meta property="og:title" content="Río — Ropa para sentirte como hoy quieres sentirte" />
 <meta property="og:description" content="Playeras con frases que te recuerdan quién eres. Únete a la preventa — 20% para los primeros 50." />
 <meta property="og:type" content="website" />
-<!-- Agregar og:image cuando tengan una foto o diseño final de la playera -->
+<meta property="og:image" content="https://rio-preventa.netlify.app/assets/og-image.png" />
+<!-- Reemplazar por una foto real del producto cuando tengan el diseño final -->
 <meta name="twitter:card" content="summary_large_image" />
 <style>
   :root {
@@ -953,6 +954,9 @@
   });
 
   cargarMuro();
+
+  // Cuenta esta visita (privado — solo Carlos ve el total, en /.netlify/functions/visitas)
+  fetch('/.netlify/functions/visitas', { method: 'POST' }).catch(() => {});
 
   // Envía el formulario a Netlify Forms (funciona solo una vez publicado en Netlify).
   // No se usan atributos onsubmit en el HTML a propósito: Netlify reescribe la etiqueta <form>
