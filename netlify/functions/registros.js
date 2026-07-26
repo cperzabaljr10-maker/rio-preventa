@@ -24,10 +24,15 @@ exports.handler = async function () {
     const preventa = forms.find((f) => f.name === 'preventa');
     const count = (entrada?.submission_count || 0) + (preventa?.submission_count || 0);
 
+    const timestamps = [entrada?.last_submission_at, preventa?.last_submission_at].filter(Boolean);
+    const lastSubmissionAt = timestamps.length
+      ? timestamps.sort().reverse()[0]
+      : null;
+
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ count }),
+      body: JSON.stringify({ count, lastSubmissionAt }),
     };
   } catch (e) {
     return {

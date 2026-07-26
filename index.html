@@ -172,6 +172,49 @@
   }
   .autosugestion p:nth-child(1) { color: var(--accent); }
 
+  /* BARRA DE SCROLL COMO RÍO */
+  .scroll-river {
+    position: fixed; top: 0; right: 0; width: 4px; height: 100%; z-index: 300;
+    background: rgba(255,255,255,0.05);
+  }
+  .scroll-river-fill {
+    width: 100%; height: 0%; background: linear-gradient(180deg, var(--accent), var(--accent-deep));
+    transition: height 0.1s linear;
+  }
+
+  /* BOTÓN DE SONIDO */
+  .sound-toggle {
+    position: fixed; bottom: 24px; left: 24px; z-index: 250;
+    width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--border);
+    background: var(--bg-soft); color: var(--text); font-size: 18px; cursor: pointer;
+  }
+  .sound-toggle:hover { border-color: var(--accent); }
+  .sound-toggle.playing { background: var(--accent); border-color: var(--accent); }
+
+  /* NOTIFICACIÓN DE ACTIVIDAD */
+  .activity-toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 250; max-width: 280px;
+    background: var(--bg-soft); border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px 18px; font-size: 13px; color: var(--text-dim);
+    transform: translateY(120%); transition: transform 0.4s ease; opacity: 0;
+  }
+  .activity-toast.show { transform: translateY(0); opacity: 1; }
+  .activity-toast strong { color: var(--text); }
+  @media (max-width: 600px) { .activity-toast { right: 12px; left: 12px; max-width: none; } }
+
+  /* FALTAN LUGARES — momento grande */
+  .lugares-block { text-align: center; padding: 70px 24px; background: var(--bg-soft); }
+  .lugares-block .num-grande {
+    font-family: Georgia, serif; font-style: italic; color: var(--accent);
+    font-size: clamp(50px, 10vw, 100px); line-height: 1;
+  }
+  .lugares-block p { color: var(--text-dim); margin-top: 10px; font-size: 15px; }
+
+  /* CARTA DE CIERRE */
+  .carta { max-width: 620px; margin: 0 auto; padding: 80px 24px; text-align: left; }
+  .carta p { font-family: Georgia, serif; font-size: 17px; line-height: 1.8; color: var(--text-dim); margin-bottom: 16px; }
+  .carta .firma { color: var(--text); font-style: italic; margin-top: 24px; }
+
   /* CINEMA — video horizontal de río */
   .rio-cinema { position: relative; width: 100%; height: 60vh; min-height: 320px; overflow: hidden; }
   .rio-cinema video { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -371,6 +414,16 @@
 </style>
 </head>
 <body>
+
+<div class="scroll-river"><div class="scroll-river-fill" id="scrollRiverFill"></div></div>
+
+<button class="sound-toggle" id="soundToggle" aria-label="Activar sonido de río">🔇</button>
+<audio id="rioAudio" loop>
+  <!-- Agregar aquí el archivo real de sonido de río (assets/rio-sonido.mp3) cuando lo descarguen -->
+  <source src="assets/rio-sonido.mp3" type="audio/mpeg" />
+</audio>
+
+<div class="activity-toast" id="activityToast"></div>
 
 <div class="entry-overlay" id="entryModal">
   <div class="entry-box">
@@ -613,6 +666,11 @@
   </div>
 </section>
 
+<div class="lugares-block">
+  <div class="num-grande" id="lugaresGrande">50</div>
+  <p>lugares con 20% de descuento — antes de que se acaben</p>
+</div>
+
 <section class="wrap" id="waitlist">
   <div class="section-label reveal">Preventa</div>
   <div class="waitlist-box reveal">
@@ -684,6 +742,12 @@
   </div>
 </section>
 
+<section class="carta reveal">
+  <p>No sabemos todavía cómo va a terminar todo esto. Empezamos con una plática entre amigos, sin buscarlo — y aquí seguimos, construyéndolo capa por capa, con toda la intención.</p>
+  <p>Si llegaste hasta aquí, ya eres parte de esto, así no hayas comprado nada todavía. Gracias por cruzar el río con nosotros.</p>
+  <p class="firma">— Carlos &amp; Jose</p>
+</section>
+
 <footer class="wrap">
   <div class="footer-row">
     <span>Río — hecho con intención, capa por capa.</span>
@@ -700,13 +764,59 @@
   function pintarBarra(n) {
     document.querySelectorAll('.progress-count').forEach(el => el.textContent = n);
     document.querySelectorAll('.progress-fill').forEach(el => el.style.width = Math.min(100, (n / RIO_META) * 100) + '%');
+    const restantes = Math.max(0, RIO_META - n);
+    const lg = document.getElementById('lugaresGrande');
+    if (lg) lg.textContent = restantes;
   }
   pintarBarra(RIO_REGISTROS_RESPALDO);
 
+  function tiempoRelativo(iso) {
+    const mins = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+    if (mins < 1) return 'hace un momento';
+    if (mins < 60) return 'hace ' + mins + ' min';
+    const horas = Math.round(mins / 60);
+    if (horas < 24) return 'hace ' + horas + (horas === 1 ? ' hora' : ' horas');
+    return 'hace ' + Math.round(horas / 24) + ' días';
+  }
+
   fetch('/.netlify/functions/registros')
     .then(r => r.json())
-    .then(data => { if (typeof data.count === 'number') pintarBarra(data.count); })
+    .then(data => {
+      if (typeof data.count === 'number') pintarBarra(data.count);
+      if (data.lastSubmissionAt) {
+        setTimeout(() => {
+          const toast = document.getElementById('activityToast');
+          toast.innerHTML = '<strong>Alguien se unió</strong> a la preventa ' + tiempoRelativo(data.lastSubmissionAt) + '.';
+          toast.classList.add('show');
+          setTimeout(() => toast.classList.remove('show'), 8000);
+        }, 6000);
+      }
+    })
     .catch(() => {});
+
+  // Barra de scroll como río
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    document.getElementById('scrollRiverFill').style.height = pct + '%';
+  });
+
+  // Botón de sonido ambiente (opcional — requiere assets/rio-sonido.mp3)
+  document.getElementById('soundToggle').addEventListener('click', function () {
+    const audio = document.getElementById('rioAudio');
+    if (audio.paused) {
+      audio.play().then(() => {
+        this.textContent = '🔊';
+        this.classList.add('playing');
+      }).catch(() => {
+        alert('Todavía no hay archivo de sonido — agréguenlo en assets/rio-sonido.mp3.');
+      });
+    } else {
+      audio.pause();
+      this.textContent = '🔇';
+      this.classList.remove('playing');
+    }
+  });
 
   if (!sessionStorage.getItem('rioEntrySeen')) {
     setTimeout(() => {
