@@ -3,7 +3,11 @@
 const { getStore } = require('@netlify/blobs');
 
 function store() {
-  return getStore('palabras');
+  return getStore({
+    name: 'palabras',
+    siteID: process.env.NETLIFY_SITE_ID,
+    token: process.env.NETLIFY_API_TOKEN,
+  });
 }
 
 exports.handler = async function (event) {
