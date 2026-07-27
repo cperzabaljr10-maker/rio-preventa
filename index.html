@@ -377,15 +377,12 @@
   .proceso-tile video { width: 100%; height: 100%; object-fit: cover; display: block; }
   .proceso-placeholder {
     position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center;
-    padding-bottom: 22px;
-    background: linear-gradient(135deg, var(--bg-soft) 0%, var(--accent-deep) 50%, var(--bg-soft) 100%);
-    background-size: 220% 220%; animation: shimmer 6s ease infinite;
+    padding-bottom: 22px; pointer-events: none;
   }
   .proceso-placeholder span {
     font-family: var(--font-serif); font-style: italic; font-size: 17px; color: var(--text);
     background: rgba(14,13,11,0.55); padding: 8px 18px; border-radius: 999px;
   }
-  @keyframes shimmer { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
   @media (max-width: 760px) {
     .proceso-grid { grid-template-columns: 1fr 1fr; }
@@ -594,19 +591,19 @@
   <p class="lead reveal">El material. Las letras. El estampado. Así se construye cada pieza — pronto en video.</p>
   <div class="proceso-grid">
     <div class="proceso-tile reveal">
-      <video autoplay muted loop playsinline poster="">
+      <video autoplay muted loop playsinline poster="assets/proceso-material.jpg">
         <!-- Reemplazar src cuando tengan el clip filmado -->
       </video>
       <div class="proceso-placeholder"><span>El material</span></div>
     </div>
     <div class="proceso-tile reveal">
-      <video autoplay muted loop playsinline poster="">
+      <video autoplay muted loop playsinline poster="assets/proceso-letras.jpg">
         <!-- Reemplazar src cuando tengan el clip filmado -->
       </video>
       <div class="proceso-placeholder"><span>Las letras</span></div>
     </div>
     <div class="proceso-tile reveal">
-      <video autoplay muted loop playsinline poster="">
+      <video autoplay muted loop playsinline poster="assets/proceso-estampado.jpg">
         <!-- Reemplazar src cuando tengan el clip filmado -->
       </video>
       <div class="proceso-placeholder"><span>El estampado</span></div>
