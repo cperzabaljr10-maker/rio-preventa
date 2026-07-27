@@ -153,6 +153,12 @@
   }
   .card h3 { font-size: 26px; margin-bottom: 10px; }
   .card p { color: var(--text-dim); font-size: 14px; }
+  .card-phrases { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .card-phrase {
+    font-family: var(--font-serif); font-style: italic; font-size: 12px;
+    background: rgba(78,140,163,0.12); border: 1px solid var(--border);
+    color: var(--text-dim); padding: 6px 12px; border-radius: 999px;
+  }
 
   /* VALORES */
   .valores-grid { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
@@ -300,8 +306,12 @@
   .faq-icon { color: var(--accent); font-size: 20px; transition: transform 0.3s ease; }
   .faq-item.open .faq-icon { transform: rotate(45deg); }
   .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-  .faq-item.open .faq-a { max-height: 200px; }
-  .faq-a p { color: var(--text-dim); font-size: 14px; padding-bottom: 20px; max-width: 600px; }
+  .faq-item.open .faq-a { max-height: 460px; }
+  .faq-a p { color: var(--text-dim); font-size: 14px; padding-bottom: 12px; max-width: 600px; }
+  .faq-table { width: 100%; max-width: 480px; border-collapse: collapse; margin: 4px 0 10px; font-family: var(--font-mono); font-size: 12px; }
+  .faq-table th, .faq-table td { text-align: left; padding: 6px 14px 6px 0; border-bottom: 1px solid var(--border); color: var(--text-dim); }
+  .faq-table th { color: var(--text); text-transform: uppercase; letter-spacing: 1px; font-size: 10px; }
+  .faq-note { font-size: 11px; color: var(--text-dim); opacity: 0.75; padding-bottom: 20px; max-width: 600px; }
 
   /* WAITLIST */
   .waitlist-box {
@@ -618,7 +628,11 @@
     <div class="card reveal">
       <div class="num">Drop 01 · Ahora</div>
       <h3>Playeras</h3>
-      <p>Validamos el mensaje y el diseño junto a la comunidad que estamos construyendo.</p>
+      <p>Cada playera es un mensaje que eliges rockear según cómo te sientas ese día. Frente liso — el mensaje va en la espalda.</p>
+      <div class="card-phrases">
+        <span class="card-phrase">"El río no se detiene"</span>
+        <span class="card-phrase">"Hoy elijo fluir, no forzar"</span>
+      </div>
     </div>
     <div class="card reveal">
       <div class="num">Drop 02 · Invierno <span class="coming-soon">Próximamente</span></div>
@@ -720,25 +734,48 @@
       <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
         <span>¿Qué tallas manejan?</span><span class="faq-icon">+</span>
       </button>
-      <div class="faq-a"><p>Unisex, corte regular. Guía de referencia (pecho / largo): S — 96cm / 68cm · M — 102cm / 70cm · L — 108cm / 72cm · XL — 114cm / 74cm.</p></div>
+      <div class="faq-a">
+        <p>Unisex, corte regular. Guía de medidas en cm, playera puesta plana:</p>
+        <table class="faq-table">
+          <tr><th>Talla</th><th>Pecho</th><th>Largo</th><th>Manga</th></tr>
+          <tr><td>S</td><td>96</td><td>68</td><td>20</td></tr>
+          <tr><td>M</td><td>102</td><td>70</td><td>21</td></tr>
+          <tr><td>L</td><td>108</td><td>72</td><td>22</td></tr>
+          <tr><td>XL</td><td>114</td><td>74</td><td>23</td></tr>
+          <tr><td>XXL</td><td>120</td><td>76</td><td>24</td></tr>
+        </table>
+        <p class="faq-note">Medidas de referencia — pueden variar un poco según el lote de tela.</p>
+      </div>
     </div>
     <div class="faq-item reveal">
       <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
         <span>¿Cuánto tarda el envío?</span><span class="faq-icon">+</span>
       </button>
-      <div class="faq-a"><p>Al ser un lote de preventa, el tiempo estimado de entrega es de 2-3 semanas después de que cierre el Drop 01. Te avisamos por correo/WhatsApp en cuanto salga tu pedido.</p></div>
+      <div class="faq-a"><p>Al ser un lote de preventa, el tiempo estimado de entrega es de 2-3 semanas después de que cierre el Drop 01. Hacemos envíos a todo México. El costo se calcula aparte según tu código postal, al finalizar tu pedido. Te avisamos por correo/WhatsApp en cuanto salga el tuyo.</p></div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        <span>¿Hacen envíos a Estados Unidos?</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><p>Sí — si estás en El Paso o cualquier parte de EE.UU., también te llega. El costo y tiempo de envío internacional se calculan aparte; escríbenos por WhatsApp si tienes dudas antes de comprar.</p></div>
     </div>
     <div class="faq-item reveal">
       <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
         <span>¿Puedo cambiar o devolver mi playera?</span><span class="faq-icon">+</span>
       </button>
-      <div class="faq-a"><p>Sí — si la talla no te queda, tienes 7 días después de recibirla para solicitar un cambio. Escríbenos por WhatsApp con tu número de pedido.</p></div>
+      <div class="faq-a"><p>Sí — si la talla no te queda, tienes 7 días después de recibirla para solicitar un cambio, siempre que no se haya usado ni lavado y conserve su etiqueta. El envío de regreso corre por tu cuenta, salvo que el error haya sido nuestro (talla equivocada, defecto de fábrica) — en ese caso lo cubrimos nosotros. Escríbenos por WhatsApp con tu número de pedido.</p></div>
     </div>
     <div class="faq-item reveal">
       <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
         <span>¿De qué material son?</span><span class="faq-icon">+</span>
       </button>
       <div class="faq-a"><p>Algodón de peso considerable, pensado para durar — no es la playera delgada básica.</p></div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+        <span>¿Qué hacen con mis datos?</span><span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a"><p>Solo usamos tu correo y WhatsApp para avisarte de la preventa y del lanzamiento — nunca los compartimos ni los vendemos a nadie. Si en algún momento quieres que los borremos, solo escríbenos.</p></div>
     </div>
   </div>
 </section>
